@@ -1,0 +1,33 @@
+---
+applications:
+ - name: rad-webapp
+   memory: 1G
+   instances: 1
+   path: target/rad-web-1.0.0-SNAPSHOT.jar
+   
+   services:
+   - sso-demo
+
+   env:
+     # If we are using this manifest, we need to be in cloud mode
+     SPRING_PROFILES_ACTIVE: cloud
+
+     # Grant type to be set for the application's UAA client configurations. Only one grant type per application is supported by the SSO service.
+     GRANT_TYPE: authorization_code
+
+     # Identity provider(s) to be set for the application's client configurations
+     SSO_IDENTITY_PROVIDERS: cerner-associates
+     
+     # Client scope(s) for the application, not used for client credentials grant type
+     SSO_SCOPES: openid, todo.read, todo.write, todo.anonymous
+     
+     # Client scope(s) for the application that are automatically authorized when acting on behalf of a user
+     SSO_AUTO_APPROVED_SCOPES: openid, todo.read, todo.anonymous
+
+     # Resource(s) that the application will use as scopes/authorities to be created if they do not already exist during bootstrapping
+     SSO_RESOURCES: |
+       todo.read:  Read Objects
+       todo.write: Write Objects
+       todo.anonymous: Anonymous Access
+
+       
